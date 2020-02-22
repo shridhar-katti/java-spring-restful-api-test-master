@@ -12,11 +12,12 @@ import uk.co.huntersix.spring.rest.model.Person;
 
 @Service
 public class PersonDataService {
-	public static  List<Person> PERSON_DATA = new ArrayList<>(Arrays.asList(new Person("Mary", "Smith"),
-			new Person("Mary", "Evan"),new Person("Scott", "Evan"),new Person("Brian", "Archer"), new Person("Collin", "Brown")));
+	private  List<Person> personDataList = new ArrayList<>(
+			Arrays.asList(new Person("Mary", "Smith"), new Person("Mary", "Evan"), new Person("Scott", "Evan"),
+					new Person("Brian", "Archer"), new Person("Collin", "Brown")));
 
 	public Optional<Person> findPerson(String lastName, String firstName) {
-		List<Person> filteredList = PERSON_DATA.stream()
+		List<Person> filteredList = personDataList.stream()
 				.filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
 				.collect(Collectors.toList());
 
@@ -29,24 +30,22 @@ public class PersonDataService {
 	}
 
 	public List<Person> findPersonByLastName(String lastName) {
-		return PERSON_DATA.stream().filter(p -> p.getLastName().equalsIgnoreCase(lastName))
-				.collect(Collectors.toList());
+		return personDataList.stream().filter(p -> p.getLastName().equalsIgnoreCase(lastName)).collect(Collectors.toList());
 	}
 
 	public Optional<Person> addPerson(String lastName, String firstName) {
 
 		Optional<Person> person = Optional.ofNullable(new Person(firstName, lastName));
-		PERSON_DATA.add(person.get());
+		personDataList.add(person.get());
 
 		return person;
-
 	}
 
 	public List<Person> updateFirstName(String lastName, String firstName) {
-		
+
 		List<Person> filteredList = findPersonByLastName(lastName);
-		filteredList.stream().forEach(p ->p.setFirstName(firstName));		
-		
+		filteredList.stream().forEach(p -> p.setFirstName(firstName));
+
 		return filteredList;
 	}
 }
